@@ -1,0 +1,661 @@
+/*
+SQLyog Ultimate v12.08 (64 bit)
+MySQL - 5.5.60 : Database - dzwdatebase
+*********************************************************************
+*/
+
+
+/*!40101 SET NAMES utf8 */;
+
+/*!40101 SET SQL_MODE=''*/;
+
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/`dzwdatebase` /*!40100 DEFAULT CHARACTER SET utf8 */;
+
+USE `dzwdatebase`;
+
+/*Table structure for table `affiliation` */
+
+DROP TABLE IF EXISTS `affiliation`;
+
+CREATE TABLE `affiliation` (
+  `affiliationid` INT(11) NOT NULL,
+  `affiliationname` VARCHAR(20) DEFAULT NULL,
+  PRIMARY KEY (`affiliationid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='车辆的归属';
+
+/*Data for the table `affiliation` */
+
+insert  into `affiliation`(`affiliationid`,`affiliationname`) values (0,'京'),(2,'沪'),(3,'津'),(4,'渝'),(5,'冀');
+
+/*Table structure for table `armember` */
+
+DROP TABLE IF EXISTS `armember`;
+
+CREATE TABLE `armember` (
+  `armemberid` int(11) NOT NULL,
+  `artisansid` int(11) DEFAULT NULL,
+  `starid` int(11) DEFAULT NULL,
+  `ararmemberno` varchar(20) DEFAULT NULL,
+  `armembername` varchar(20) DEFAULT NULL,
+  `ararmembersex` int(11) DEFAULT NULL,
+  `isar` int(11) DEFAULT NULL,
+  `araccount` varchar(20) DEFAULT NULL,
+  `arphone` varchar(11) DEFAULT NULL,
+  `araddress` varchar(100) DEFAULT NULL,
+  `worktype` varchar(30) DEFAULT NULL,
+  `keepclass` varchar(30) DEFAULT NULL,
+  PRIMARY KEY (`armemberid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='技工组对应的成员信息';
+
+/*Data for the table `armember` */
+
+/*Table structure for table `artisans` */
+
+DROP TABLE IF EXISTS `artisans`;
+
+CREATE TABLE `artisans` (
+  `artisansid` int(11) NOT NULL,
+  `gclassifyid` int(11) DEFAULT NULL,
+  `artisansname` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`artisansid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='修车技工组,用于维修车辆';
+
+/*Data for the table `artisans` */
+
+/*Table structure for table `arvehicle` */
+
+DROP TABLE IF EXISTS `arvehicle`;
+
+CREATE TABLE `arvehicle` (
+  `arvehicleid` int(11) NOT NULL,
+  `vbrandid` int(11) DEFAULT NULL,
+  `vtypeid` int(11) DEFAULT NULL,
+  `artisansid` int(11) DEFAULT NULL,
+  `arlicense` varchar(20) DEFAULT NULL,
+  `arvehiclekm` varchar(20) DEFAULT NULL,
+  `vehiclestatus` int(11) DEFAULT NULL COMMENT '车辆是否已外出，0表示在家，1表示外出接车，2表示在维修',
+  PRIMARY KEY (`arvehicleid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='技工组外勤的车';
+
+/*Data for the table `arvehicle` */
+
+/*Table structure for table `clearingform` */
+
+DROP TABLE IF EXISTS `clearingform`;
+
+CREATE TABLE `clearingform` (
+  `clearingformid` int(11) NOT NULL,
+  `clearingformname` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`clearingformid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='维修订单的结算方式';
+
+/*Data for the table `clearingform` */
+
+/*Table structure for table `commodity` */
+
+DROP TABLE IF EXISTS `commodity`;
+
+CREATE TABLE `commodity` (
+  `commid` int(11) NOT NULL,
+  `incometypeid` int(11) DEFAULT NULL,
+  `countunitid` int(11) DEFAULT NULL,
+  `goodsid` int(11) DEFAULT NULL,
+  `commtypeid` int(11) DEFAULT NULL,
+  `cpriceid` int(11) DEFAULT NULL,
+  `commno` varchar(20) DEFAULT NULL,
+  `commname` varchar(20) DEFAULT NULL,
+  `commcount` int(11) DEFAULT NULL,
+  `praddress` varchar(30) DEFAULT NULL,
+  `commprice` float DEFAULT NULL,
+  `cclass` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`commid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='维修车辆所需的零件';
+
+/*Data for the table `commodity` */
+
+/*Table structure for table `commtype` */
+
+DROP TABLE IF EXISTS `commtype`;
+
+CREATE TABLE `commtype` (
+  `commtypeid` int(11) NOT NULL,
+  `cykindxid` int(11) DEFAULT NULL,
+  `commtypename` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`commtypeid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商品所属的类型';
+
+/*Data for the table `commtype` */
+
+insert  into `commtype`(`commtypeid`,`cykindxid`,`commtypename`) values (0,NULL,'轮胎'),(1,NULL,'发动机'),(2,NULL,'车身'),(4,NULL,'油品'),(5,NULL,'传动系统'),(6,NULL,'行驶系统');
+
+/*Table structure for table `countunit` */
+
+DROP TABLE IF EXISTS `countunit`;
+
+CREATE TABLE `countunit` (
+  `countunitid` int(11) NOT NULL,
+  `countunitname` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`countunitid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='计算商品的单位';
+
+/*Data for the table `countunit` */
+
+/*Table structure for table `cprice` */
+
+DROP TABLE IF EXISTS `cprice`;
+
+CREATE TABLE `cprice` (
+  `cpriceid` int(11) NOT NULL,
+  `serviceitemid` int(11) DEFAULT NULL,
+  `commid` int(11) DEFAULT NULL,
+  `cpricesl` float DEFAULT NULL,
+  `vipprice` float DEFAULT NULL,
+  PRIMARY KEY (`cpriceid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商品的价格';
+
+/*Data for the table `cprice` */
+
+/*Table structure for table `cykind` */
+
+DROP TABLE IF EXISTS `cykind`;
+
+CREATE TABLE `cykind` (
+  `cykindid` int(11) NOT NULL,
+  `cykindname` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`cykindid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商品种类分类第一层';
+
+/*Data for the table `cykind` */
+
+/*Table structure for table `cykindx` */
+
+DROP TABLE IF EXISTS `cykindx`;
+
+CREATE TABLE `cykindx` (
+  `cykindxid` int(11) NOT NULL,
+  `cykindid` int(11) DEFAULT NULL,
+  `cykindxname` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`cykindxid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商品分类第二层';
+
+/*Data for the table `cykindx` */
+
+/*Table structure for table `department` */
+
+DROP TABLE IF EXISTS `department`;
+
+CREATE TABLE `department` (
+  `deid` int(11) NOT NULL,
+  `shopid` int(11) DEFAULT NULL,
+  `dename` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`deid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='当前公司的部门';
+
+/*Data for the table `department` */
+
+/*Table structure for table `dimissiontext` */
+
+DROP TABLE IF EXISTS `dimissiontext`;
+
+CREATE TABLE `dimissiontext` (
+  `dimissionid` int(11) NOT NULL,
+  `dimissioncause` varchar(100) DEFAULT NULL,
+  `dimissiondate` datetime DEFAULT NULL,
+  PRIMARY KEY (`dimissionid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='职工离职登记';
+
+/*Data for the table `dimissiontext` */
+
+/*Table structure for table `employee` */
+
+DROP TABLE IF EXISTS `employee`;
+
+CREATE TABLE `employee` (
+  `eid` int(11) NOT NULL AUTO_INCREMENT,
+  `shopid` int(11) DEFAULT NULL,
+  `etypeid` int(11) DEFAULT NULL,
+  `staffaeid` int(11) DEFAULT NULL,
+  `stationid` int(11) DEFAULT NULL,
+  `dimissionid` int(11) DEFAULT NULL,
+  `groupid` int(11) DEFAULT NULL,
+  `eno` varchar(20) DEFAULT NULL,
+  `ename` varchar(20) DEFAULT NULL,
+  `eaccount` varchar(20) DEFAULT NULL,
+  `epwd` varchar(20) DEFAULT NULL,
+  `esex` int(11) DEFAULT NULL,
+  `ephone` varchar(11) DEFAULT NULL,
+  `eemail` varchar(30) DEFAULT NULL,
+  `eaddress` varchar(50) DEFAULT NULL,
+  `einputDate` date DEFAULT NULL,
+  `ecurriculumvitae` varchar(200) DEFAULT NULL,
+  `eimage` varchar(200) DEFAULT NULL,
+  `eidentity` varchar(18) DEFAULT NULL,
+  PRIMARY KEY (`eid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='存储公司所有职工加管理员';
+
+/*Data for the table `employee` */
+
+/*Table structure for table `enginetype` */
+
+DROP TABLE IF EXISTS `enginetype`;
+
+CREATE TABLE `enginetype` (
+  `enginetypeid` int(11) NOT NULL,
+  `enginetypename` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`enginetypeid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='汽车发动机的品牌';
+
+/*Data for the table `enginetype` */
+
+insert  into `enginetype`(`enginetypeid`,`enginetypename`) values (0,'UKKMS'),(1,'帕金斯'),(2,'康明斯'),(4,'MTU'),(5,'卡特'),(6,'上柴'),(7,'玉柴');
+
+/*Table structure for table `goodssource` */
+
+DROP TABLE IF EXISTS `goodssource`;
+
+CREATE TABLE `goodssource` (
+  `goodsid` int(11) NOT NULL,
+  `supplierasid` int(11) DEFAULT NULL,
+  `paymenttypeid` int(11) DEFAULT NULL,
+  `goodsno` varchar(20) DEFAULT NULL,
+  `goodsname` varchar(20) DEFAULT NULL,
+  `goodsaddress` varchar(100) DEFAULT NULL,
+  `goodsphone` varchar(11) DEFAULT NULL,
+  `goodsemail` varchar(20) DEFAULT NULL,
+  `paymentdays` int(11) DEFAULT NULL,
+  `goodsremarks` varchar(200) DEFAULT NULL,
+  PRIMARY KEY (`goodsid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='商品的供货单位';
+
+/*Data for the table `goodssource` */
+
+/*Table structure for table `groupclassify` */
+
+DROP TABLE IF EXISTS `groupclassify`;
+
+CREATE TABLE `groupclassify` (
+  `gclassifyid` int(11) NOT NULL,
+  `gclassifyname` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`gclassifyid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='将技工班组分类';
+
+/*Data for the table `groupclassify` */
+
+/*Table structure for table `incometype` */
+
+DROP TABLE IF EXISTS `incometype`;
+
+CREATE TABLE `incometype` (
+  `incometypeid` int(11) NOT NULL,
+  `incometypename` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`incometypeid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='维修项目收入种类';
+
+/*Data for the table `incometype` */
+
+/*Table structure for table `mnpricetype` */
+
+DROP TABLE IF EXISTS `mnpricetype`;
+
+CREATE TABLE `mnpricetype` (
+  `mnpricetypeid` int(11) NOT NULL,
+  `mnpricetypename` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`mnpricetypeid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='维修项目的价格种类';
+
+/*Data for the table `mnpricetype` */
+
+/*Table structure for table `oilmass` */
+
+DROP TABLE IF EXISTS `oilmass`;
+
+CREATE TABLE `oilmass` (
+  `oilmassid` int(11) NOT NULL,
+  `oilmassname` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`oilmassid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='维修车辆的油量剩余';
+
+/*Data for the table `oilmass` */
+
+/*Table structure for table `paymenttype` */
+
+DROP TABLE IF EXISTS `paymenttype`;
+
+CREATE TABLE `paymenttype` (
+  `paymenttypeid` int(11) NOT NULL,
+  `paymenttypename` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`paymenttypeid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='提货的付款方式';
+
+/*Data for the table `paymenttype` */
+
+insert  into `paymenttype`(`paymenttypeid`,`paymenttypename`) values (0,'支付宝'),(2,'微信');
+
+/*Table structure for table `rbproject` */
+
+DROP TABLE IF EXISTS `rbproject`;
+
+CREATE TABLE `rbproject` (
+  `rbprojectid` int(11) NOT NULL,
+  `mnpricetypeid` int(11) DEFAULT NULL,
+  `serviceitemid` int(11) DEFAULT NULL,
+  `rescuebillid` int(11) DEFAULT NULL,
+  `artisansid` int(11) DEFAULT NULL,
+  `armemberid` int(11) DEFAULT NULL,
+  `repairbillid` int(11) DEFAULT NULL,
+  `rbprojectno` varchar(20) DEFAULT NULL,
+  `rbprojectsl` int(11) DEFAULT NULL,
+  `rbprojectms` varchar(50) DEFAULT NULL,
+  `rbprojectyy` varchar(50) DEFAULT NULL,
+  `yprice` float DEFAULT NULL,
+  `yprices` float DEFAULT NULL,
+  `nocharge` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`rbprojectid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='车辆要维修的单个项目';
+
+/*Data for the table `rbproject` */
+
+/*Table structure for table `repairbill` */
+
+DROP TABLE IF EXISTS `repairbill`;
+
+CREATE TABLE `repairbill` (
+  `repairbillid` int(11) NOT NULL,
+  `shifstid` int(11) DEFAULT NULL,
+  `serviceitid` int(11) DEFAULT NULL,
+  `clearingformid` int(11) DEFAULT NULL,
+  `settleid` int(11) DEFAULT NULL,
+  `uvehicleid` int(11) DEFAULT NULL,
+  `oilmassid` int(11) DEFAULT NULL,
+  `armemberid` int(11) DEFAULT NULL,
+  `servicestateid` int(11) DEFAULT NULL,
+  `repairbilldate` datetime DEFAULT NULL,
+  `repairbilldated` datetime DEFAULT NULL,
+  `repairbilldates` datetime DEFAULT NULL,
+  `receptionnote` varchar(100) DEFAULT NULL,
+  `statement` varchar(100) DEFAULT NULL,
+  `redriver` varchar(20) DEFAULT NULL,
+  `redriverphone` varchar(11) DEFAULT NULL,
+  PRIMARY KEY (`repairbillid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='维修的单据';
+
+/*Data for the table `repairbill` */
+
+/*Table structure for table `rescuebill` */
+
+DROP TABLE IF EXISTS `rescuebill`;
+
+CREATE TABLE `rescuebill` (
+  `rescuebillid` int(11) NOT NULL,
+  `clearingformid` int(11) DEFAULT NULL,
+  `shifstid` int(11) DEFAULT NULL,
+  `uvehicleid` int(11) DEFAULT NULL,
+  `armemberid` int(11) DEFAULT NULL,
+  `artisansid` int(11) DEFAULT NULL,
+  `servicestateid` int(11) DEFAULT NULL,
+  `settleid` int(11) DEFAULT NULL,
+  `rescuebillno` varchar(20) DEFAULT NULL,
+  `gooff` datetime DEFAULT NULL,
+  `arrivaltime` datetime DEFAULT NULL,
+  `workingtime` datetime DEFAULT NULL,
+  `rbsaddress` varchar(50) DEFAULT NULL,
+  `downtown` varchar(50) DEFAULT NULL,
+  `finishtime` datetime DEFAULT NULL,
+  `finishprice` float DEFAULT NULL,
+  `wxremarks` varchar(100) DEFAULT NULL,
+  `resdriver` varchar(20) DEFAULT NULL,
+  `resphone` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`rescuebillid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='站外车辆救援';
+
+/*Data for the table `rescuebill` */
+
+/*Table structure for table `serviceitem` */
+
+DROP TABLE IF EXISTS `serviceitem`;
+
+CREATE TABLE `serviceitem` (
+  `serviceitemid` int(11) NOT NULL,
+  `incometypeid` int(11) DEFAULT NULL,
+  `serviceitxid` int(11) DEFAULT NULL,
+  `cpriceid` int(11) DEFAULT NULL,
+  `serviceitemno` varchar(20) DEFAULT NULL,
+  `serviceitemname` varchar(20) DEFAULT NULL,
+  `siremarks` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`serviceitemid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='维修项目分类';
+
+/*Data for the table `serviceitem` */
+
+/*Table structure for table `serviceitemtype` */
+
+DROP TABLE IF EXISTS `serviceitemtype`;
+
+CREATE TABLE `serviceitemtype` (
+  `serviceitid` int(11) NOT NULL,
+  `sename` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`serviceitid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='维修项目分类';
+
+/*Data for the table `serviceitemtype` */
+
+/*Table structure for table `serviceitx` */
+
+DROP TABLE IF EXISTS `serviceitx`;
+
+CREATE TABLE `serviceitx` (
+  `serviceitxid` int(11) NOT NULL,
+  `serviceitid` int(11) DEFAULT NULL,
+  `sename` varchar(20) DEFAULT NULL,
+  `senamex` char(10) DEFAULT NULL,
+  PRIMARY KEY (`serviceitxid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='维修项目第二层分类';
+
+/*Data for the table `serviceitx` */
+
+/*Table structure for table `servicestate` */
+
+DROP TABLE IF EXISTS `servicestate`;
+
+CREATE TABLE `servicestate` (
+  `servicestateid` int(11) NOT NULL,
+  `servicestatename` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`servicestateid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='维修单的进行状态';
+
+/*Data for the table `servicestate` */
+
+/*Table structure for table `settle` */
+
+DROP TABLE IF EXISTS `settle`;
+
+CREATE TABLE `settle` (
+  `settleid` int(11) NOT NULL,
+  `eid` int(11) DEFAULT NULL,
+  `repairbillid` int(11) DEFAULT NULL,
+  `rescuebillid` int(11) DEFAULT NULL,
+  `settleno` varchar(20) DEFAULT NULL,
+  `settletime` datetime DEFAULT NULL,
+  `settleintegral` int(11) DEFAULT NULL,
+  `settlesum` float DEFAULT NULL,
+  `closeprice` float DEFAULT NULL,
+  `materialspr` float DEFAULT NULL,
+  `manhourpr` float DEFAULT NULL,
+  `additionpr` float DEFAULT NULL,
+  PRIMARY KEY (`settleid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='账单结算';
+
+/*Data for the table `settle` */
+
+/*Table structure for table `shifts` */
+
+DROP TABLE IF EXISTS `shifts`;
+
+CREATE TABLE `shifts` (
+  `shifstid` int(11) NOT NULL,
+  `shiftsname` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`shifstid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='是什么时候施工的';
+
+/*Data for the table `shifts` */
+
+/*Table structure for table `shop` */
+
+DROP TABLE IF EXISTS `shop`;
+
+CREATE TABLE `shop` (
+  `shopid` int(11) NOT NULL,
+  `shopname` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`shopid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='员工所在的门店';
+
+/*Data for the table `shop` */
+
+/*Table structure for table `staffattribute` */
+
+DROP TABLE IF EXISTS `staffattribute`;
+
+CREATE TABLE `staffattribute` (
+  `staffaeid` int(11) NOT NULL,
+  `staffaename` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`staffaeid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='员工的计薪方式';
+
+/*Data for the table `staffattribute` */
+
+/*Table structure for table `starlevel` */
+
+DROP TABLE IF EXISTS `starlevel`;
+
+CREATE TABLE `starlevel` (
+  `starid` int(11) NOT NULL,
+  `starname` varchar(20) DEFAULT NULL,
+  `multiple` float DEFAULT NULL,
+  PRIMARY KEY (`starid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='技工等级';
+
+/*Data for the table `starlevel` */
+
+/*Table structure for table `station` */
+
+DROP TABLE IF EXISTS `station`;
+
+CREATE TABLE `station` (
+  `stationid` int(11) NOT NULL,
+  `stationname` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`stationid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='员工对应的岗位';
+
+/*Data for the table `station` */
+
+/*Table structure for table `supplieras` */
+
+DROP TABLE IF EXISTS `supplieras`;
+
+CREATE TABLE `supplieras` (
+  `supplierasid` int(11) NOT NULL,
+  `supplierasname` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`supplierasid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='供货商省级分类';
+
+/*Data for the table `supplieras` */
+
+/*Table structure for table `tbetype` */
+
+DROP TABLE IF EXISTS `tbetype`;
+
+CREATE TABLE `tbetype` (
+  `etypeid` int(11) NOT NULL,
+  `etypename` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`etypeid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='职工的状态表';
+
+/*Data for the table `tbetype` */
+
+/*Table structure for table `user` */
+
+DROP TABLE IF EXISTS `user`;
+
+CREATE TABLE `user` (
+  `userid` int(11) NOT NULL,
+  `armemberid` int(11) DEFAULT NULL,
+  `userno` varchar(20) DEFAULT NULL,
+  `username` varchar(20) DEFAULT NULL,
+  `arvehiclekm` varchar(20) DEFAULT NULL,
+  `userphone` varchar(11) DEFAULT NULL,
+  `useraddress` varchar(30) DEFAULT NULL,
+  `usertime` date DEFAULT NULL,
+  `usercomment` varchar(100) DEFAULT NULL,
+  `uamount` float DEFAULT NULL,
+  `uintegral` int(11) DEFAULT NULL,
+  `signupaddress` varchar(50) DEFAULT NULL,
+  `isvip` int(11) DEFAULT NULL,
+  PRIMARY KEY (`userid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='来修车的用户';
+
+/*Data for the table `user` */
+
+insert  into `user`(`userid`,`armemberid`,`userno`,`username`,`arvehiclekm`,`userphone`,`useraddress`,`usertime`,`usercomment`,`uamount`,`uintegral`,`signupaddress`,`isvip`) values (1,1,'1','1','1','1','1','2020-12-28','1',1,1,'1',1);
+
+/*Table structure for table `uservehicle` */
+
+DROP TABLE IF EXISTS `uservehicle`;
+
+CREATE TABLE `uservehicle` (
+  `uvehicleid` int(11) NOT NULL,
+  `vtypeid` int(11) DEFAULT NULL,
+  `vbrandid` int(11) DEFAULT NULL,
+  `userid` int(11) DEFAULT NULL,
+  `affiliationid` int(11) DEFAULT NULL,
+  `ulicense` varchar(20) DEFAULT NULL,
+  `resdriver` varchar(20) DEFAULT NULL,
+  `driverphone` varchar(11) DEFAULT NULL,
+  `umileage` int(11) DEFAULT NULL,
+  `registereddate` date DEFAULT NULL,
+  `buydate` date DEFAULT NULL,
+  PRIMARY KEY (`uvehicleid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `uservehicle` */
+
+/*Table structure for table `vehiclebrand` */
+
+DROP TABLE IF EXISTS `vehiclebrand`;
+
+CREATE TABLE `vehiclebrand` (
+  `vbrandid` int(11) NOT NULL,
+  `vbrandno` varchar(20) DEFAULT NULL,
+  `vbrandname` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`vbrandid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='车辆品牌信息';
+
+/*Data for the table `vehiclebrand` */
+
+/*Table structure for table `vehicletype` */
+
+DROP TABLE IF EXISTS `vehicletype`;
+
+CREATE TABLE `vehicletype` (
+  `vtypeid` int(11) NOT NULL,
+  `enginetypeid` int(11) DEFAULT NULL,
+  `vtypeno` varchar(20) DEFAULT NULL,
+  `vtypename` varchar(20) DEFAULT NULL,
+  `vprice` float DEFAULT NULL,
+  `vdate` date DEFAULT NULL,
+  `vpower` int(11) DEFAULT NULL,
+  `fuelmark` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`vtypeid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='车辆品牌对应的所有车辆型号';
+
+/*Data for the table `vehicletype` */
+
+insert  into `vehicletype`(`vtypeid`,`enginetypeid`,`vtypeno`,`vtypename`,`vprice`,`vdate`,`vpower`,`fuelmark`) values (1,1,'1001','宝马3系',290000,'2020-12-28',80,'89');
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
